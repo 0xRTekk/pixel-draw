@@ -10,6 +10,42 @@
 - C'est du Js avec des types
   - Compilé vers du JS : les fichiers TS sont traduits en JS
 
+```ts
+function multiply(a: number, b: number) {
+  return a * b;
+}
+
+multiply(10, "5"); // Ne nous liasse pas compiler.
+multiply(10, 5); // OK
+```
+
+```ts
+interface Person {
+  firstname: string;
+  lastname: string;
+  age: number;
+}
+
+function greetings(person: Person) {
+  console.log(`Bonjour, je m'appelle ${person.firstname} ${person.lastname} et j'ai ${person.age} !`);
+}
+
+const bob = {
+  firstname: "Bob",
+  job: "Sales man",
+  age: 29
+}
+greetings(bob); // Ne compile pas car l'objet bob ne respecte pas l'interface définit plus haut
+
+const alice = {
+  firstname = "Alice"
+  lastname = "Durand"
+  age = 30
+}
+greetings(alice); // OK
+
+```
+
 ## Workflow
 
 - Ici notre backend va servir notre front
