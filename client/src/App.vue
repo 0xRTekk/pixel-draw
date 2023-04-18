@@ -2,6 +2,8 @@
   import { onMounted, ref } from 'vue';
   import { io } from "socket.io-client";
   import type { Socket } from "socket.io-client";
+  import { VSwatches } from "vue3-swatches";
+  import "vue3-swatches/dist/style.css"
 
   interface Pixel {
     cellIndex: number;
@@ -14,6 +16,7 @@
   let socket: Socket;
 
   const cellRefs = ref<HTMLElement[]>([]);
+  const colorRef = ref("#F0F");
 
   // Au moment du montage du composant, on vient ouvrir une connexion websocket entre le client et le serveur
   onMounted(() => {
@@ -43,7 +46,7 @@
 
     socket.emit("pixel", {
       cellIndex: cellIndex - 1, // Pour ne pas avoir le décallage
-      color: "#F0F",
+      color: colorRef.value,
     });
   }
 </script>
@@ -62,6 +65,10 @@
         @click="colorizeCell(cellIndex)"
         ref="cellRefs"
       ></div>
+    </div>
+
+    <div>
+      <VSwatches v-model="colorRef" />
     </div>
   </main>
 </template>
