@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { io } from "socket.io-client";
   import type { Socket } from "socket.io-client";
 
@@ -13,12 +13,19 @@
 
   let socket: Socket;
 
+  const cellRefs = ref<HTMLElement[]>([]);
+
   // Au moment du montage du composant, on vient ouvrir une connexion websocket entre le client et le serveur
   onMounted(() => {
     socket = io(); // On se connecte en websocket à un serveur : ici le serveur courant, donc pas besoin de préciser l'adresse
     
     socket.on("pixel", (pixel: Pixel) => {
       console.log(`[FRONT] - On recoit le pixel du back : ${pixel.cellIndex} - ${pixel.color}`);
+
+      // On va venir recup le pixel qu'il faut MaJ dans le front
+      const cellDiv = cellRefs.value[pixel.cellIndex];
+      // Lui appliquer la nouvelle couleur
+      cellDiv.style.backgroundColor = pixel.color;
     })
   });
 
@@ -44,6 +51,7 @@
         :key="cellIndex"
         class="cell"
         @click="colorizeCell(cellIndex)"
+        ref="cellRefs"
       ></div>
     </div>
   </main>
