@@ -1,14 +1,29 @@
 <script setup lang="ts">
+  import { onMounted } from 'vue';
+  import { io } from "socket.io-client";
+  import type { Socket } from "socket.io-client";
+
   const gridSize = 100;
   const gridStyle = `grid-template-columns: repeat(${gridSize}, 1fr);`;
+
+  let socket: Socket;
+
+  // Au moment du montage du composant, on vient ouvrir une connexion websocket entre le client et le serveur
+  onMounted(() => {
+    socket = io(); // On se connecte en websocket à un serveur : ici le serveur courant, donc pas besoin de préciser l'adresse
+    
+    socket.on("pixel", (pixel) => {
+      console.log(`[FRONT] - On recoit le pixel du back : ${pixel.cellIndex} - ${pixel.color}`)
+    })
+  });
 
   function colorizeCell(cellIndex: number) {
     console.log(cellIndex);
 
-    // Dire au backend que la cellule cellIndex a été colorié (en #F0F dans un premier temps)
-    // await fetch(POST "/colorize", { cellIndex: cellIndex, color: "#F0F" })
-    // await fetch(GET "/colors")
-    // Refresh les pixels
+    socket.emit("pixel", {
+      cellIndex,
+      color: "#F0F",
+    });
   }
 </script>
 
