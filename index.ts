@@ -4,11 +4,11 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.static("client/dist")); // On sert les fichiers build de notre front
+
 app.get("/", (req, res) => {
   res.send("Hello Starship");
 });
-
-// app.use(express.static("...."));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
