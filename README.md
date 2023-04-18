@@ -54,3 +54,9 @@ greetings(alice); // OK
 
 - Pour l'instant lorsqu'on fait un `npm run dev` depuis le dossier `client/`, on a un serveur de dev qui nous sert le front.
   - On va venir modifier ça pour que le front soit servit par notre app express
+
+## WebSocket
+
+L'API WebSocket est une technologie évoluée qui permet d'ouvrir un canal de communication bidirectionnelle entre un navigateur (côté client) et un serveur. Avec cette API vous pouvez envoyer des messages à un serveur et recevoir ses réponses de manière événementielle sans avoir à aller consulter le serveur pour obtenir une réponse.
+
+![Schéma websocket](./websocket.png)
