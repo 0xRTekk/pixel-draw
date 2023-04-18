@@ -3,6 +3,11 @@
   import { io } from "socket.io-client";
   import type { Socket } from "socket.io-client";
 
+  interface Pixel {
+    cellIndex: number;
+    color: string;
+  }
+
   const gridSize = 100;
   const gridStyle = `grid-template-columns: repeat(${gridSize}, 1fr);`;
 
@@ -12,8 +17,8 @@
   onMounted(() => {
     socket = io(); // On se connecte en websocket à un serveur : ici le serveur courant, donc pas besoin de préciser l'adresse
     
-    socket.on("pixel", (pixel) => {
-      console.log(`[FRONT] - On recoit le pixel du back : ${pixel.cellIndex} - ${pixel.color}`)
+    socket.on("pixel", (pixel: Pixel) => {
+      console.log(`[FRONT] - On recoit le pixel du back : ${pixel.cellIndex} - ${pixel.color}`);
     })
   });
 

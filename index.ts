@@ -4,6 +4,12 @@ import { Server } from "socket.io";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+// Interfaces TS
+interface Pixel {
+  cellIndex: number;
+  color: string;
+}
+
 // Create express app
 const app = express();
 
@@ -21,7 +27,7 @@ io.on("connection", (socket) => {
   console.log("Une connexion au serveur websocket a été ouverte");
 
   // Se mettre en écoute des différents events envoyés depuis les clients
-  socket.on("pixel", (pixel) => {
+  socket.on("pixel", (pixel: Pixel) => {
     console.log(`[BACK] - On recoit le pixel du front : ${pixel.cellIndex} - ${pixel.color}`);
 
     // 1. On enregitsre en DB
