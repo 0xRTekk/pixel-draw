@@ -19,21 +19,30 @@
   onMounted(() => {
     socket = io(); // On se connecte en websocket à un serveur : ici le serveur courant, donc pas besoin de préciser l'adresse
     
+    socket.on("pixels", (pixels: Pixel[]) => {
+      pixels.forEach((pixel) => {
+        displayPixel(pixel);
+      });
+    });
+
     socket.on("pixel", (pixel: Pixel) => {
       console.log(`[FRONT] - On recoit le pixel du back : ${pixel.cellIndex} - ${pixel.color}`);
-
-      // On va venir recup le pixel qu'il faut MaJ dans le front
-      const cellDiv = cellRefs.value[pixel.cellIndex];
-      // Lui appliquer la nouvelle couleur
-      cellDiv.style.backgroundColor = pixel.color;
-    })
+      displayPixel(pixel);
+    });
   });
+
+  function displayPixel(pixel: Pixel) {
+    // On va venir recup le pixel qu'il faut MaJ dans le front
+    const cellDiv = cellRefs.value[pixel.cellIndex];
+    // Lui appliquer la nouvelle couleur
+    cellDiv.style.backgroundColor = pixel.color;
+  }
 
   function colorizeCell(cellIndex: number) {
     console.log(cellIndex);
 
     socket.emit("pixel", {
-      cellIndex,
+      cellIndex: cellIndex - 1, // Pour ne pas avoir le décallage
       color: "#F0F",
     });
   }
